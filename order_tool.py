@@ -21,13 +21,3 @@ class OrderLookup:
         if order_id in self.orders:
             return self.orders[order_id]
         return None
-
-python3
->>> from order_tool import OrderLookup
->>> tool = OrderLookup({"A100": "shipped"})
->>> tool.find_order_id("where is a100?")
-'A100'
->>> tool.find_status("A100")
-'shipped'
->>> tool.find_status("A999")
->>> exit()
