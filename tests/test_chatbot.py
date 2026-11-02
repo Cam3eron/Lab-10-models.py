@@ -1,6 +1,7 @@
 from chatbot import SupportChatbot
 from order_tool import OrderLookup
 
+
 def make_bot():
     """Build a fresh chatbot with its own tool for each test."""
     orders = {"A100": "shipped", "A101": "processing"}
