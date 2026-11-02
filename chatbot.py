@@ -1,6 +1,9 @@
 # chatbot.py
 # Author: Cameron McGraw
 
+from itertools import count
+
+
 HANDOFF_WORDS = ["address", "payment", "card"]
 
 
@@ -46,3 +49,33 @@ class SupportChatbot:
             return "Which order? Please send order ID like A100."""
         status = self.order_tool.find_status(order_id)
         return f"Order {order_id} is {status}."
+
+    def count_user_messages(self):
+        """Return the amount of messages one has sent."""
+        count = 0
+        for message in self.history:
+            if message["role"] == "user":
+                count += 1
+        return count
+
+    def test_count_user_messages():
+        bot = make_bot()
+        bot.respond("hello")
+        bot.respond("Where is order A100?")
+        assert bot.count_user_messages() == 2
+
+    def __init__(self, name, instructions, order_tool, stock_tool):
+        """Set up one chatbot with its own name, instructions, tools, and history."""
+        self.name = name
+        self.instructions = instructions
+        self.order_tool = order_tool
+        self.stock_tool = stock_tool
+        self.history = []
+
+def stock_reply(self, user_message):
+        """Use the stock tool to answer a question about stock."""
+        product = self.stock_tool.find_product_id(user_message)
+        if product is None:
+            return "Which product? Please name the item you would like me to check."
+        count = self.stock_tool.count_for(product)
+        return f"We have {count} of {product} in stock."
