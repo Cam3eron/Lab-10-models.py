@@ -158,3 +158,14 @@ def test_count_user_messages_skips_tool_entries():
     bot.respond("hello")
     bot.respond("Where is order A100?")
     assert bot.count_user_messages() == 2
+
+def test_model_can_ask_about_a_return():
+    model = FakeModel(
+        [
+            ask_for_tool("check_return", {"order_id": "A100"}),
+            {"text": "Not yet."},
+        ]
+    )
+    bot = make_bot(model)
+    bot.respond("Can I return order A100?")
+    assert "cannot be returned yet" in bot.history[1]["content"]

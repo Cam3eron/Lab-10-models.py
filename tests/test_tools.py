@@ -34,8 +34,7 @@ def test_check_stock_for_known_and_unknown_products():
     tools = make_tools()
     assert (
         tools.stock_tool.check_stock("day pack")
-        == "We have 0 of the day pack in stock."
-    )
+        == "We have 0 of the day pack in stock.")
     assert tools.stock_tool.check_stock("tent") == "That product was not found."
 
 
@@ -89,3 +88,9 @@ def test_unknown_order_containing_a_known_id_is_not_queued():
     reply = tools.change_queue.request_address_change("A1000", "9 Pine Street")
     assert "No order" in reply
     assert tools.change_queue.waiting() == []
+
+def test_only_delivered_orders_can_be_returned():
+    tools = make_tools()
+    tools.order_tool.orders["A101"]["status"] = "delivered"
+    assert "can be returned" in tools.order_tool.check_return("A101")
+    assert "cannot be returned yet" in tools.order_tool.check_return("A100")
